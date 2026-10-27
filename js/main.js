@@ -69,10 +69,11 @@
     return gsap.delayedCall(d, () => {});
   }
 
-  // Расшифровка одним жестом: вперёд — T, O, Y, O, T, A и всё красное; назад — те же буквы в обратном порядке
+  // Расшифровка одним жестом: вперёд — T, O, Y, O, T, A и всё красное; назад — эмблема сразу гаснет целиком
   const HOLD = .5;
   async function decode(dir) {
-    const ks = dir > 0 ? [1, 2, 3, 4, 5, 6, 7] : [6, 5, 4, 3, 2, 1, 0];
+    if (dir < 0) return setLogo(0);
+    const ks = [1, 2, 3, 4, 5, 6, 7];
     for (const [i, k] of ks.entries()) {
       await setLogo(k);
       if (i < ks.length - 1) await gsap.delayedCall(HOLD, () => {});
