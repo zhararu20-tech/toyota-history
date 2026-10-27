@@ -33,9 +33,12 @@ button { font: inherit; cursor: pointer; }
   color: #fff; text-align: center;
 }
 .intro-slogan {
-  margin: 0; font: 500 clamp(40px, 7vw, 112px)/1 'Unbounded', sans-serif; letter-spacing: -.03em;
+  margin: .32em 0; font: 600 clamp(40px, 7.4vw, 124px)/1 'Unbounded', sans-serif; letter-spacing: -.035em;
   text-shadow: 0 6px 40px rgba(0,0,0,.55);
 }
+/* Слоган вытянут по высоте; отступы выше компенсируют растяжение (transform не влияет на раскладку) */
+.intro-slogan span { display: inline-block; transform: scaleY(1.65); }
+@media (max-width: 600px) { .intro-slogan { margin: .7em 0; } } /* на телефоне слоган в две строки */
 
 /* Надпись TOYOTA: одинаковая разметка в интро и под эмблемой, чтобы её можно было «передать» */
 .wordmark {

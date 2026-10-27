@@ -21,11 +21,10 @@
    * Всё листается колесом по шагам:
    * 0 — интро «Управляй мечтой»
    * 1 — TOYOTA выходит вперёд, появляется эмблема
-   * 2..7 — буквы T O Y O T A
-   * 8 — всё название красное
-   * 9..11 — машины
+   * 2 — расшифровка: буквы T O Y O T A проходят подряд, название краснеет, остановка
+   * 3..5 — машины
    */
-  const LOGO_FIRST = 1, LOGO_LAST = 8, CARS_FIRST = 9;
+  const LOGO_FIRST = 1, LOGO_LAST = 2, CARS_FIRST = 3;
   const scenes = $$('.scene');
   const LAST = CARS_FIRST + scenes.length - 1;
   let step = 0, busy = false, lastNav = 0;
@@ -68,6 +67,16 @@
     });
     if (k === 7) gsap.fromTo(word, { scale: 1 }, { scale: 1.08, duration: .35, yoyo: true, repeat: 1, ease: 'power2.out' });
     return gsap.delayedCall(d, () => {});
+  }
+
+  // Расшифровка одним жестом: вперёд — T, O, Y, O, T, A и всё красное; назад — те же буквы в обратном порядке
+  const HOLD = .5;
+  async function decode(dir) {
+    const ks = dir > 0 ? [1, 2, 3, 4, 5, 6, 7] : [6, 5, 4, 3, 2, 1, 0];
+    for (const [i, k] of ks.entries()) {
+      await setLogo(k);
+      if (i < ks.length - 1) await gsap.delayedCall(HOLD, () => {});
+    }
   }
 
   // 0 → 1: слоган уходит, TOYOTA выходит на первый план, экран белеет, появляется эмблема
@@ -193,7 +202,7 @@
     step = to;
     if (from === 0 && to === 1) await introToLogo();
     else if (from === 1 && to === 0) await logoToIntro();
-    else if (inLogo(from) && inLogo(to)) await setLogo(to - LOGO_FIRST);
+    else if (inLogo(from) && inLogo(to)) await decode(to - from);
     else if (from === LOGO_LAST && to === CARS_FIRST) await logoToCars();
     else if (from === CARS_FIRST && to === LOGO_LAST) await carsToLogo();
     else if (from >= CARS_FIRST && to >= CARS_FIRST) await wipeTo(to - CARS_FIRST, Math.sign(to - from));
