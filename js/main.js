@@ -29,7 +29,7 @@
   const intro = $('#intro'), cols = $$('.intro-cols i');
   const introWord = $('.intro-word'), slogan = $('.intro-slogan');
   const loop = new SliceLoop($('#sliceLoop'), {
-    images: ['img/slices-1.png', 'img/slices-2.png', 'img/slices-3.png'],
+    images: ['img/slices-1.webp', 'img/slices-2.webp', 'img/slices-3.webp'],
     interval: 2200, duration: 1300,   // полоски меняются реже и медленнее
     accent: 'rgba(235,10,30,.95)', bg: '#000'
   });
@@ -147,6 +147,7 @@
     gsap.set(names, { autoAlpha: 1 });
     gsap.set(intro, { autoAlpha: 0 });
     loop.paused = true;
+    warm('supra');
     body.dataset.stage = 'names';
     nmState = 'a';
     await gsap.timeline()
@@ -256,6 +257,13 @@
   fitBig();
   document.fonts.ready.then(fitBig);
   addEventListener('resize', fitBig);
+  // Видео не качаются при открытии страницы: Supra — как только ушли с интро (к разрезу она уже готова),
+  // остальные — пока смотрят Supra, до выбора машины
+  const warm = (...names) => names.forEach(n => {
+    const v = CARS[n].video;
+    if (v.preload !== 'auto') { v.preload = 'auto'; v.load(); }
+  });
+
   let car = 'supra';                 // машина, которая сейчас на экране (или была на нём последней)
   const CAR = () => CARS[car];
 
@@ -333,7 +341,7 @@
     ctx.textAlign = 'center';
     if (el === nmSlogan) {
       const span = el.firstElementChild, r = span.getBoundingClientRect(), text = span.textContent;
-      ctx.font = `600 ${size}px Unbounded`;
+      ctx.font = `700 ${size}px Unbounded`;
       if ('letterSpacing' in ctx) ctx.letterSpacing = `${-.035 * size}px`;
       const m = ctx.measureText(text);
       ctx.translate(r.left + r.width / 2, r.top + r.height / 2);
@@ -446,6 +454,7 @@
   async function cutInto(name, paint, sheetEl) {
     const cfg = CARS[name];
     car = name;
+    warm(...Object.keys(CARS));
     Object.values(CARS).forEach(o => { if (o !== cfg) { o.scene.classList.remove('is-on'); o.video.pause(); } });
     gsap.set($$(TEXT, cfg.scene), { opacity: 0 });
     gsap.set(cfg.video, { '--shade': 0 });

@@ -51,6 +51,10 @@ class SliceLoop {
 
   frame(now) {
     if (!this.paused && now >= this.next) { this.event(now); this.next = now + this.interval * (.6 + Math.random() * .8); }
+    // On pause with no wipe in progress the picture doesn't change — skip redrawing it every frame
+    const still = this.paused && !this.slots.some(s => this.busy(s, now));
+    if (still && this.drawnStill) return;
+    this.drawnStill = still;
     const { ctx, sw } = this, W = this.c.width, H = this.c.height;
     ctx.fillStyle = this.bg; ctx.fillRect(0, 0, W, H);
     const draw = (id, x) => ctx.drawImage(this.ims[Math.floor(id / this.cols)], (id % this.cols) * sw, 0, sw, H, x, 0, sw, H);

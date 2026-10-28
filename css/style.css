@@ -32,7 +32,7 @@ button { font: inherit; cursor: pointer; }
   color: #fff; text-align: center;
 }
 .intro-slogan {
-  margin: .32em 0; font: 600 clamp(18px, 5.2vw, 104px)/1 'Unbounded', sans-serif; letter-spacing: -.035em; white-space: nowrap;
+  margin: .32em 0; font: 700 clamp(18px, 5.2vw, 104px)/1 'Unbounded', sans-serif; letter-spacing: -.035em; white-space: nowrap;
   text-shadow: 0 6px 40px rgba(0,0,0,.55);
 }
 /* Слоган вытянут по высоте; отступы выше компенсируют растяжение (transform не влияет на раскладку) */
@@ -77,7 +77,7 @@ button { font: inherit; cursor: pointer; }
   --d: 0;
   text-shadow: calc(var(--d) * .03em) calc(var(--d) * .03em) 0 #fff, calc(var(--d) * .06em) calc(var(--d) * .06em) 0 var(--ink);
 }
-.nm-slogan { font: 600 100px/1 'Unbounded', sans-serif; letter-spacing: -.035em; }
+.nm-slogan { font: 700 100px/1 'Unbounded', sans-serif; letter-spacing: -.035em; }
 .nm-slogan span { display: inline-block; transform: scaleY(1.65); }
 .nm-toyota.wordmark { font-size: 100px; color: var(--ink); }
 
