@@ -13,7 +13,7 @@ class SliceLoop {
     this.interval = opts.interval ?? 1100;     // avg ms between changes
     this.duration = opts.duration ?? 800;      // wipe ms (0 = instant swap)
     this.accent = opts.accent ?? 'rgba(145,132,217,.9)';
-    this.bg = opts.bg ?? '#161826';
+    this.bg = opts.bg ?? '#000';
     this.paused = false;
     this.total = this.images.length * this.cols;
     this.ready = Promise.all(this.images.map(src => new Promise((ok, err) => {
